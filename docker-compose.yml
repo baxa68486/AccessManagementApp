@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  accessmanagapp:
+    image: ${DOCKER_REGISTRY-}accessmanagapp
+    build:
+      context: .
+      dockerfile: AccessManagApp\Dockerfile
