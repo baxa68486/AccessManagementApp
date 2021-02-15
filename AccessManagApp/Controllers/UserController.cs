@@ -76,7 +76,7 @@ namespace AccessManagApp.Controllers
                 return BadRequest(ModelState);
             }
             var user = await _userService.FindByAsync((user) => user.LoginName.Equals(userDTO.LoginName));
-            if (user == null)
+            if (user != null)
             {
                 return Conflict();
             }

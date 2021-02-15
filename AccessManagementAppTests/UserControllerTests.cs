@@ -124,7 +124,7 @@ namespace AccessManagementAppTests
             {
                 LoginName = "Test1"
             };
-
+            _mockUserService.Setup(s => s.FindByAsync(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(new User());
             var actionResult = await _userController.AddUser(userDTO);
             var res = actionResult as ConflictResult;
 
@@ -137,16 +137,15 @@ namespace AccessManagementAppTests
         {
             UserDTO userDTO = new UserDTO()
             {
-                LoginName = "Test1"
+                LoginName = "User1"
             };
-            _mockUserService.Setup(s => s.FindByAsync(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(new User() { LoginName = "User1" });
 
             var actionResult = await _userController.AddUser(userDTO);
             var res = actionResult as CreatedAtActionResult;
 
             Assert.IsNotNull(res);
             Assert.AreEqual("GetUserByName", res.ActionName);
-            Assert.AreEqual("Test1", res.RouteValues["loginname"]);
+            Assert.AreEqual("User1", res.RouteValues["loginname"]);
         }
 
     }
