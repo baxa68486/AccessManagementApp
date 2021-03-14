@@ -24,22 +24,18 @@ namespace DataAccessLayer.Repository
         {
 
         }
-
         public int Count()
         {
             return dbSet.Count();
         }
-
         public virtual async Task<IEnumerable<T>> FindAllAsync()
         {
             return dbSet.ToList();
         }
-
         public virtual async Task<T> FindByIdAsync(int id)
         {
             return dbSet.Find(id); ;
         }
-
         public virtual async Task<T> FindByAsync(Expression<Func<T, bool>> predicate)
         {
             var ls = await dbSet.Where(predicate).ToListAsync();
@@ -49,7 +45,9 @@ namespace DataAccessLayer.Repository
         public virtual async Task RemoveAsync(T entity)
         {
             if (entity == null)
+            {
                 throw new ArgumentNullException("entity");
+            }
             dbSet.Remove(entity);
             await dbContext.SaveChangesAsync();
         }

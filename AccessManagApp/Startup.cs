@@ -54,6 +54,7 @@ namespace AccessManagApp
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
 
             app.UseAuthorization();
 

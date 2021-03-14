@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Linq;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Interfaces;
 using DataAccessLayer.Pagination;
 using TestApp.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using AccessManagApp.Service;
 using System.Threading.Tasks;
 

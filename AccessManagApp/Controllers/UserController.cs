@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TestApp.Interfaces;
 using System.Linq;
-using System;
 
 namespace AccessManagApp.Controllers
 {
@@ -26,39 +25,40 @@ namespace AccessManagApp.Controllers
             _mapper = mapper;
         }
 
+        // https://localhost:44383/api/users/2/2 -- works
+        // https://localhost:5001/api/users?page=1&size=2 -- can not use as parameters
         [HttpGet]
-        [Route("")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
-        {         
-            var users = await _userService.FindAllAsync();
-            var dtos = _mapper.Map<List<UserDTO>>(users.ToList());
-            return Ok(dtos);
-        }
-
-
-        [HttpGet]
-        [Route("pagination", Name = "GetUsersWithPagination")]
-        public IActionResult GetUsers(int pageNumber, int pageSize)
+        [Route("", Name = "GetUsers")]
+        public async Task<IActionResult> GetUsers(int? page, int? size)
         {
-            if (pageNumber < 1 && pageSize < 1)
+            if (page == null && size == null)
+            {
+                var users = await _userService.FindAllAsync();
+                var dtos = _mapper.Map<List<UserDTO>>(users.ToList());
+                return Ok(dtos);
+            }
+            
+            if (page == null || size == null || page < 1 || size < 1)
             {
                 _logger.LogInformation("Bad arguments");
                 return BadRequest();
             }
-            var responseModel = _userService.FindAllAsync(pageNumber, pageSize);
+
+            var responseModel = await _userService.FindAllAsync(page.Value, size.Value);
+
             if (responseModel == null)
             {
                 _logger.LogError("ResponseModel are null");
                 return NotFound();
             }
-            return Ok(responseModel.Result);
+            return Ok(responseModel);
         }
 
         [HttpGet]
-        [Route("{loginname}")]
-        public async Task<IActionResult> GetUserByName(string loginName)
+        [Route("{name}")]
+        public async Task<IActionResult> GetUserByName(string name)
         {
-            var user = _userService.FindByAsync(us => us.LoginName.Equals(loginName));
+            var user = _userService.FindByAsync(us => us.LoginName.Equals(name));
             if (user == null)
             {
                 return NotFound();
@@ -86,9 +86,9 @@ namespace AccessManagApp.Controllers
         
         [HttpDelete]
         [Route("{name}")]
-        public async Task<IActionResult> Delete(string loginName)
+        public async Task<IActionResult> Delete(string name)
         {
-            var user = await _userService.FindByAsync((user) => user.LoginName.Equals(loginName));
+            var user = await _userService.FindByAsync((user) => user.LoginName.Equals(name));
         
             if (user == null)
             {

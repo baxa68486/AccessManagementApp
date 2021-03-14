@@ -10,7 +10,8 @@ namespace TestApp.Interfaces
 {
     public interface IUserService : IGenericService<User>
     {
-        Task<ResponseModel<User>> FindAllAsync(int pageNumber, int pageSize, Expression<Func<User, bool>> predicate);
+        Task<ResponseModel<User>> FindAllAsync(int pageNumber, int pageSize,
+                                               Expression<Func<User, bool>> predicate);
         Task<ResponseModel<User>> FindAllAsync(int pageNumber, int pageSize);
     }
 }

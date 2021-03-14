@@ -40,7 +40,7 @@ namespace AccessManagementAppTests
         {
              _mockMapper.Setup(m => m.Map<List<UserDTO>>(It.IsAny<List<User>>())).Returns(GetMockedUserDTOs());
 
-            ActionResult<IEnumerable<UserDTO>> actionResult = await _userController.GetAllUsers();
+            ActionResult<IEnumerable<UserDTO>> actionResult = await _userController.Get();
             var res = actionResult.Result as OkObjectResult;
             var userDTOs = (List<UserDTO>)res.Value;
             Assert.IsNotNull(userDTOs);
