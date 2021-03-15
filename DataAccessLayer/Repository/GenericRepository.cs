@@ -30,11 +30,11 @@ namespace DataAccessLayer.Repository
         }
         public virtual async Task<IEnumerable<T>> FindAllAsync()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
         public virtual async Task<T> FindByIdAsync(int id)
         {
-            return dbSet.Find(id); ;
+            return await dbSet.FindAsync(id); ;
         }
         public virtual async Task<T> FindByAsync(Expression<Func<T, bool>> predicate)
         {

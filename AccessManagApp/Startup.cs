@@ -39,7 +39,6 @@ namespace AccessManagApp
 
             services.AddDbContext<DataContext>(opt =>
                                                opt.UseInMemoryDatabase("DataList"));
-
             services.AddControllers();
         }
 
@@ -63,39 +62,13 @@ namespace AccessManagApp
                 endpoints.MapControllers();
 
             });
-        }
 
-     
-        private static void AddTestData(DataContext context)
-        {
-            var testUser1 = new User
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
             {
-                LoginName = "user1",
-                Roles = new List<Role>()
-                {
-                    new Role()
-                    {
-                        Name = "a"
-                    }
-                }
-            };
-
-            var testUser2 = new User
-            {
-                LoginName = "user2",
-                Roles = new List<Role>()
-                {
-                    new Role()
-                    {
-                        Name = "b"
-                    }
-                }
-            };
-
-            context.Users.Add(testUser1);
-            context.Users.Add(testUser2);
-
-            context.SaveChanges();
+                var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
+                dbInitializer.SeedData();
+            }
         }
 
         private void RegisterMapperConfigruation(IServiceCollection services)
@@ -116,6 +89,7 @@ namespace AccessManagApp
 
         private void RegisterComponents(IServiceCollection services)
         {
+            services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 

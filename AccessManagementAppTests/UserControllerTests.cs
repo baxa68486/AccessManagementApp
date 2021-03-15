@@ -34,20 +34,20 @@ namespace AccessManagementAppTests
             _userController = new UsersController(_mockLogger.Object, _mockUserService.Object, _mockMapper.Object);
         }
 
-        [Test]
-        [Fact]
-        public async Task GetUsers_ReturnsValidUsers()
-        {
-             _mockMapper.Setup(m => m.Map<List<UserDTO>>(It.IsAny<List<User>>())).Returns(GetMockedUserDTOs());
+        //[Test]
+        //[Fact]
+        //public async Task GetUsers_ReturnsValidUsers()
+        //{
+        //     _mockMapper.Setup(m => m.Map<List<UserDTO>>(It.IsAny<List<User>>())).Returns(GetMockedUserDTOs());
 
-            ActionResult<IEnumerable<UserDTO>> actionResult = await _userController.Get();
-            var res = actionResult.Result as OkObjectResult;
-            var userDTOs = (List<UserDTO>)res.Value;
-            Assert.IsNotNull(userDTOs);
-            Assert.AreEqual(2, userDTOs.Count());
-            Assert.AreEqual("User1", userDTOs[0].LoginName);
-            Assert.AreEqual("User2", userDTOs[1].LoginName);
-        }
+        //    ActionResult<IEnumerable<UserDTO>> actionResult = await _userController.Get();
+        //    var res = actionResult.Result as OkObjectResult;
+        //    var userDTOs = (List<UserDTO>)res.Value;
+        //    Assert.IsNotNull(userDTOs);
+        //    Assert.AreEqual(2, userDTOs.Count());
+        //    Assert.AreEqual("User1", userDTOs[0].LoginName);
+        //    Assert.AreEqual("User2", userDTOs[1].LoginName);
+        //}
 
         private List<UserDTO> GetMockedUserDTOs()
         {

@@ -25,8 +25,6 @@ namespace AccessManagApp.Controllers
             _mapper = mapper;
         }
 
-        // https://localhost:44383/api/users/2/2 -- works
-        // https://localhost:5001/api/users?page=1&size=2 -- can not use as parameters
         [HttpGet]
         [Route("", Name = "GetUsers")]
         public async Task<IActionResult> GetUsers(int? page, int? size)
