@@ -8,9 +8,6 @@ namespace AccessManagApp
 {
     public interface IDbInitializer
     {
-        /// <summary>
-        /// Adds some default values to the Db
-        /// </summary>
         void SeedData();
     }
 }
