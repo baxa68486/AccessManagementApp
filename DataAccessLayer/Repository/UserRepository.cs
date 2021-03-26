@@ -41,7 +41,8 @@ namespace DataAccessLayer.Repository
 
         public override async Task<IEnumerable<User>> FindAllAsync()
         {
-            var res = await dbSet.Include(u => u.Roles).ToListAsync();
+            var res = await dbSet.Include(u => u.Roles)
+                                 .ToListAsync();
             return res;
         }
 
@@ -55,7 +56,7 @@ namespace DataAccessLayer.Repository
 
         public override async Task AddAsync(User user)
         {
-            var res= await _dbContext.Users.AddAsync(user);
+            await _dbContext.Users.AddAsync(user);
             if (user.Roles != null)
             {
                 foreach (var role in user.Roles)
@@ -69,7 +70,7 @@ namespace DataAccessLayer.Repository
         public async Task<User> GetUserWithRolesAsync(string loginName)
         {
             var q = dbSet.Where((us) => us.LoginName.Equals(loginName))
-                        .Include(us => us.Roles);
+                         .Include(us => us.Roles);
             var ls = await q.ToListAsync();
 
             return ls.FirstOrDefault();        
