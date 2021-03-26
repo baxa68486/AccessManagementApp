@@ -34,20 +34,23 @@ namespace AccessManagementAppTests
             _userController = new UsersController(_mockLogger.Object, _mockUserService.Object, _mockMapper.Object);
         }
 
-        //[Test]
-        //[Fact]
-        //public async Task GetUsers_ReturnsValidUsers()
-        //{
-        //     _mockMapper.Setup(m => m.Map<List<UserDTO>>(It.IsAny<List<User>>())).Returns(GetMockedUserDTOs());
+        [Test]
+        [Fact]
+        public async Task GetUsers_ReturnsValidUsers()
+        {
+            _mockMapper.Setup(m => m.Map<List<UserDTO>>(It.IsAny<List<User>>()))
+                                    .Returns(GetMockedUserDTOs());
 
-        //    ActionResult<IEnumerable<UserDTO>> actionResult = await _userController.Get();
-        //    var res = actionResult.Result as OkObjectResult;
-        //    var userDTOs = (List<UserDTO>)res.Value;
-        //    Assert.IsNotNull(userDTOs);
-        //    Assert.AreEqual(2, userDTOs.Count());
-        //    Assert.AreEqual("User1", userDTOs[0].LoginName);
-        //    Assert.AreEqual("User2", userDTOs[1].LoginName);
-        //}
+            IActionResult actionResult = await _userController.GetUsers(null, null);
+
+            var res = actionResult as OkObjectResult;
+            var userDTOs = (List<UserDTO>)res.Value;
+
+            Assert.IsNotNull(userDTOs);
+            Assert.AreEqual(2, userDTOs.Count());
+            Assert.AreEqual("User1", userDTOs[0].LoginName);
+            Assert.AreEqual("User2", userDTOs[1].LoginName);
+        }
 
         private List<UserDTO> GetMockedUserDTOs()
         {
@@ -64,27 +67,15 @@ namespace AccessManagementAppTests
                        };
         }
 
-        private List<User> GetMockedUsers()
-        {
-            return new List<User>()
-                       {
-                            new User()
-                            {
-                               LoginName = "User1"
-                            },
-                            new User()
-                            {
-                               LoginName = "User2"
-                            }
-                       };
-        }
-
         [Test]
         [Fact]
         public async Task Delete_ExistingUser()
         {
-             Func<User, bool> dunc = null;
-            _mockUserService.Setup(s => s.FindByAsync(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(new User() { LoginName = "User1"});
+            _mockUserService.Setup(s => s.FindByAsync(It.IsAny<Expression<Func<User, bool>>>()))
+                            .ReturnsAsync(new User()
+                             {
+                                LoginName = "User1"
+                            });
 
              var actionResult = await _userController.Delete("User1");
              var res = actionResult as NoContentResult;
@@ -124,7 +115,8 @@ namespace AccessManagementAppTests
             {
                 LoginName = "Test1"
             };
-            _mockUserService.Setup(s => s.FindByAsync(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(new User());
+            _mockUserService.Setup(s => s.FindByAsync(It.IsAny<Expression<Func<User, bool>>>()))
+                            .ReturnsAsync(new User());
             var actionResult = await _userController.AddUser(userDTO);
             var res = actionResult as ConflictResult;
 

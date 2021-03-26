@@ -56,7 +56,7 @@ namespace AccessManagApp.Controllers
         [Route("{name}")]
         public async Task<IActionResult> GetUserByName(string name)
         {
-            var user = _userService.FindByAsync(us => us.LoginName.Equals(name));
+            var user = await _userService.FindByAsync(us => us.LoginName.Equals(name));
             if (user == null)
             {
                 return NotFound();
